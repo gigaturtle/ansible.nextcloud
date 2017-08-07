@@ -1,0 +1,14 @@
+---
+# tasks file for ansrole.nextcloud
+
+# Create service account
+- include: user.yml
+
+# Install LAMP stack
+- include: lamp.yml
+
+# Install nextcloud
+- include: nextcloud.yml
+
+ 
+...

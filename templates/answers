@@ -1,0 +1,30 @@
+
+- become when executing mysql_secure_installation
+
+- validate password plugin?
+y
+
+- set password validation policy level
+2 (strong)
+
+- set password for root
+Password2040
+
+- checks strenght of password, prompts to continue
+y
+
+- remove anonymous users?
+y
+
+- disallow root login remotely?
+y
+
+- remove test database and access to it?
+y
+
+- reload priv tables now?
+y
+
+
+
+

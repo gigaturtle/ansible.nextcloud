@@ -1,0 +1,51 @@
+---
+
+- name: Install Apache2, {{ database }}, PHP7
+  apt: 
+    name: "{{ item }}"
+    state: present
+    update_cache: yes
+  with_items:
+    - "{{ apache2 }}"
+    - "{{ database }}"
+    - "{{ php }}"
+    - python-pexpect
+
+- name: Set hostname in apache2.conf
+  lineinfile:
+    path: /etc/apache2/apache2.conf
+    regexp: "^ServerName"
+    line: "ServerName {{ ansible_fqdn }}"
+  notify: restart apache
+
+# 2. configure firewall
+# sudo ufw app list
+#
+# sudo ufw app info "Apache Full"
+#
+# sudo ufw allow in "Apache Full"
+
+- name: Run mysql_secure_installation via expect
+  expect:
+    command: mysql_secure_installation
+    echo: yes
+    timeout: 30
+    responses:
+      "VALIDATE PASSWORD PLUGIN": "y"
+      "2 = STRONG": "2"
+      "New password": "{{ db_password }}"
+      "Re-enter new password": "{{ db_password }}"
+      "continue with the password provided": "y"
+      "Remove anonymous users": "y"
+      "Disallow root login remotely": "y"
+      "Remove test database": "y"
+      "Reload privilege tables": "y"
+
+- name: Update index file precedence to index.php
+  lineinfile:
+    path: /etc/apache2/mods-enabled/dir.conf
+    regexp: "DirectoryIndex"
+    line: "   DirectoryIndex index.php index.html index.cgi index.pl index.xhtml index.htm"
+  notify: restart apache
+
+...

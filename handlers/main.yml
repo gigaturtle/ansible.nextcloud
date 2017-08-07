@@ -1,0 +1,9 @@
+---
+# handlers file for ansrole.nextcloud
+
+- name: restart apache
+  service:
+    name: apache2
+    state: restarted
+
+...

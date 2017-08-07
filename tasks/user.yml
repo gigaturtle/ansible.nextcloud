@@ -1,0 +1,12 @@
+---
+
+# NextCloud should run as its own service account
+- name: Check/create nextcloud service account
+  user:
+    name: "{{ service_account }}"
+    createhome: yes
+    password: "{{ service_account_pw }}"
+    shell: /bin/bash
+    update_password: on_create
+
+...

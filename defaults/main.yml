@@ -1,0 +1,41 @@
+---
+# defaults file for ansrole.nextcloud
+
+# Nextcloud server account name & password
+service_account: nc.user
+service_account_pw: Complex_Password
+
+# LAMP Stack Variables
+# Installed applications
+apache2: apache2
+database: mysql-server
+db_password: Complex_Password
+php:
+  - php
+  - libapache2-mod-php
+  - php-mcrypt
+  - php-mysql
+  - python-mysqldb   # required for mysql ansible modules
+
+# Nextcloud variables
+nextcloud_checksum_url: https://download.nextcloud.com/server/releases/latest.tar.bz2.sha256
+nextcloud_checksum: /tmp/nextcloud_latest.tar.bz.sha256
+nextcloud_archive_url: https://download.nextcloud.com/server/releases/latest.tar.bz2
+nextcloud_archive: /tmp/nextcloud_latest.tar.bz2
+
+nextcloud_php_modules:
+  - php-bz2
+  - php-curl
+  - php-gd
+  - php-imagick
+  - php-intl
+  - php-mbstring
+  - php-xml
+  - php-zip
+
+db_name: nextcloud
+db_user: nc.user
+db_userpass: Complex_Password
+
+
+...

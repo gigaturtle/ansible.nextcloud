@@ -1,0 +1,66 @@
+---
+# task list for nextcloud installation and configuration
+
+- name: Downloaded latest build's sha256 checksum
+  get_url:
+    url: "{{ nextcloud_checksum_url }}"
+    dest: "{{ nextcloud_checksum }}"
+
+- name: Get sha256 value from file
+  shell: cat "{{ nextcloud_checksum }}" | awk '{print $1}'
+  register: sha256_checksum
+
+- name: Downloaded latest build
+  get_url:
+    url: "{{ nextcloud_archive_url }}"
+    dest: "{{ nextcloud_archive }}"
+    checksum: "sha256:{{ sha256_checksum.stdout }}"
+
+- name: Deploy Nextcloud to web server
+  unarchive:
+    src: "{{ nextcloud_archive }}"
+    dest: /var/www
+    remote_src: yes
+    creates: /var/www/nextcloud/index.php
+
+- name: Create Nextcloud permissions script from template
+  template:
+    src: templates/nextcloud_perms.j2
+    dest: /tmp/nextcloud_perms.sh
+
+- name: Run permissions script
+  shell: bash /tmp/nextcloud_perms.sh
+  become: yes
+
+- name: Create Nextcloud sites-available conf file
+  template:
+    src: templates/nextcloud_sites.j2
+    dest: /etc/apache2/sites-available/nextcloud.conf
+
+- name: Enable Nextcloud site in apache
+  shell: a2ensite nextcloud
+
+- name: Enable apache2 rewrite module
+  apache2_module:
+     name: rewrite
+     state: present
+
+- name: Install additional php modules
+  apt:
+    name: "{{ nextcloud_php_modules }}"
+    state: present
+  notify: restart apache
+
+- name: Add nextcloud database to MySQL
+  mysql_db:
+    name: "{{ db_name }}"
+    state: present
+
+- name: Create nextcloud mysql user
+  mysql_user:
+    name: "{{ db_user }}"
+    password: "{{ db_userpass }}"
+    update_password: on_create
+    priv: '{{ db_name }}.*:ALL'
+
+...
