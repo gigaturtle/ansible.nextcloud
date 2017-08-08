@@ -1,27 +1,23 @@
 Role Name
 =========
 
-A brief description of the role goes here.
+This ansible role will install the current version of [Nextcloud](https://nextcloud.com/).
 
-LAMP portion based on Digitial Ocean LAMP install guide:
-https://www.digitalocean.com/community/tutorials/how-to-install-linux-apache-mysql-php-lamp-stack-on-ubuntu-16-04
+The LAMP portion of this role is based on [Digitial Ocean LAMP install guide](https://www.digitalocean.com/community/tutorials/how-to-install-linux-apache-mysql-php-lamp-stack-on-ubuntu-16-04). I plan to break this out as a seperate role.
 
-Nextcloud portion based on Digital Ocean Nextcloud install guide:
-https://www.digitalocean.com/community/tutorials/how-to-install-and-configure-nextcloud-on-ubuntu-16-04
+The Nextcloud portion is also based on a [Digital Ocean install guide](https://www.digitalocean.com/community/tutorials/how-to-install-and-configure-nextcloud-on-ubuntu-16-04).
 
 Requirements
 ------------
 
-- Service account
-- LAMP Stack
+- LAMP Stack (currently contained within the role)
 - SSL Cert (use a properly issued cert, not self-signed)
 
-Any pre-requisites that may not be covered by Ansible itself or the role should be mentioned here. For instance, if the role uses the EC2 module, it may be a good idea to mention in this section that the boto package is required.
 
 Role Variables
 --------------
 
-A description of the settable variables for this role should go here, including any variables that are in defaults/main.yml, vars/main.yml, and any variables that can/should be set via parameters to the role. Any variables that are read from other roles and/or the global scope (ie. hostvars, group vars, etc.) should be mentioned here as well.
+There are a service account user/pass and a database user/pass that can be specified in defaults/main.yml.
 
 Dependencies
 ------------
@@ -45,4 +41,4 @@ BSD
 Author Information
 ------------------
 
-An optional section for the role authors to include contact information, or a website (HTML is not allowed).
+[github.com/gigaturtle](https://github.com/gigaturtle)
